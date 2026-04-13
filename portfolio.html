@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Clash+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2eb;
+    --accent: #ff4d00;
+    --accent2: #00e5ff;
+    --muted: #2a2a2a;
+    --border: #222;
+    --mono: 'Space Mono', monospace;
+    --display: 'Clash Display', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--mono);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(10px);
+  }
+  .nav-logo {
+    font-family: var(--display); font-size: 1.1rem; font-weight: 700;
+    color: var(--accent); letter-spacing: -0.5px;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--white); text-decoration: none; font-size: 0.75rem;
+    letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+    padding-top: 80px;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 4rem 3rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-tag {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: ''; display: block; width: 2rem; height: 1px; background: var(--accent);
+  }
+  .hero-name {
+    font-family: var(--display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-name span { color: var(--accent); }
+  .hero-desc {
+    font-size: 0.85rem; opacity: 0.6; max-width: 380px;
+    line-height: 1.8; margin-bottom: 2.5rem;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0.85rem 1.75rem;
+    cursor: pointer; text-decoration: none; transition: all 0.2s;
+    border: 1px solid;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--black);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn-secondary {
+    background: transparent; color: var(--white);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--white); }
+
+  .hero-right {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 3rem;
+    position: relative;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,77,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,77,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); position: relative; z-index: 1;
+  }
+  .stat-box {
+    background: var(--black); padding: 2rem 1.5rem;
+  }
+  .stat-num {
+    font-family: var(--display); font-size: 3rem; font-weight: 700;
+    color: var(--accent); line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    opacity: 0.5; margin-top: 0.5rem;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 2rem; right: 3rem;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    opacity: 0.4; writing-mode: vertical-rl;
+    display: flex; align-items: center; gap: 0.75rem; z-index: 1;
+  }
+  .hero-scroll::after {
+    content: ''; display: block; width: 1px; height: 3rem;
+    background: currentColor;
+  }
+
+  /* SECTION COMMON */
+  section { border-bottom: 1px solid var(--border); }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 2rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    opacity: 0.4;
+  }
+  .section-num {
+    font-family: var(--display); font-size: 1rem; opacity: 0.2;
+  }
+
+  /* ABOUT */
+  .about-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .about-text {
+    padding: 4rem 3rem;
+    border-right: 1px solid var(--border);
+  }
+  .about-text h2 {
+    font-family: var(--display); font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700; line-height: 1; letter-spacing: -1px;
+    margin-bottom: 1.5rem;
+  }
+  .about-text h2 em {
+    font-style: normal; color: var(--accent);
+  }
+  .about-text p {
+    font-size: 0.85rem; opacity: 0.6; line-height: 1.9; margin-bottom: 1rem;
+  }
+  .about-skills { padding: 4rem 3rem; }
+  .about-skills h3 {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    opacity: 0.4; margin-bottom: 2rem;
+  }
+  .skill-list { list-style: none; }
+  .skill-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+  }
+  .skill-name { font-size: 0.85rem; }
+  .skill-bar {
+    width: 120px; height: 2px; background: var(--muted); position: relative;
+  }
+  .skill-bar-fill {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: var(--accent); transition: width 1s ease;
+  }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .project-card {
+    padding: 2.5rem 3rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .project-card:nth-child(even) { border-right: none; }
+  .project-card:hover { background: var(--muted); }
+  .project-num {
+    font-family: var(--display); font-size: 4rem; font-weight: 700;
+    opacity: 0.06; position: absolute; top: 1rem; right: 1.5rem;
+    line-height: 1;
+  }
+  .project-tags {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .tag {
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem; border: 1px solid var(--border);
+    color: var(--accent2);
+  }
+  .project-title {
+    font-family: var(--display); font-size: 1.6rem; font-weight: 700;
+    line-height: 1.1; margin-bottom: 0.75rem; letter-spacing: -0.5px;
+  }
+  .project-desc {
+    font-size: 0.8rem; opacity: 0.55; line-height: 1.8; margin-bottom: 1.5rem;
+  }
+  .project-link {
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: gap 0.2s;
+  }
+  .project-link:hover { gap: 1rem; }
+  .project-link::after { content: '→'; }
+
+  /* CONTACT */
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .contact-left {
+    padding: 4rem 3rem;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .contact-left h2 {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700; line-height: 1;
+    letter-spacing: -2px; margin-bottom: 1.5rem;
+  }
+  .contact-left p {
+    font-size: 0.85rem; opacity: 0.55; line-height: 1.8; max-width: 360px;
+  }
+  .contact-right { padding: 4rem 3rem; }
+  .contact-links { list-style: none; }
+  .contact-link-item {
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-link-item a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 0;
+    color: var(--white); text-decoration: none;
+    font-size: 0.85rem; transition: color 0.2s;
+  }
+  .contact-link-item a:hover { color: var(--accent); }
+  .contact-link-item a span { opacity: 0.4; font-size: 0.75rem; }
+
+  /* FOOTER */
+  footer {
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.7rem; opacity: 0.3;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate { animation: fadeUp 0.7s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.25s; opacity: 0; }
+  .delay-3 { animation-delay: 0.4s; opacity: 0; }
+  .delay-4 { animation-delay: 0.55s; opacity: 0; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero, .about-inner, .contact-inner { grid-template-columns: 1fr; }
+    .hero-left, .about-text { border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-left, .hero-right, .about-text, .about-skills,
+    .contact-left, .contact-right { padding: 2.5rem 1.5rem; }
+    .section-header { padding: 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card { border-right: none; }
+    footer { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ALEX.DEV</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag animate delay-1">Available for work</div>
+    <h1 class="hero-name animate delay-2">
+      Alex<br><span>Chen</span>
+    </h1>
+    <p class="hero-desc animate delay-3">
+      Full-stack developer building fast, scalable, and beautifully crafted digital products. I turn complex problems into clean solutions.
+    </p>
+    <div class="hero-cta animate delay-4">
+      <a href="#projects" class="btn btn-primary">View Work</a>
+      <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Projects Shipped</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Cups of Coffee</div>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-label">Who I Am</span>
+    <span class="section-num">01</span>
+  </div>
+  <div class="about-inner">
+    <div class="about-text">
+      <h2>Code is my <em>craft</em></h2>
+      <p>I'm a full-stack developer with a passion for building things that matter. From startups to scale-ups, I've helped teams ship products people love.</p>
+      <p>My approach: write clean, maintainable code, obsess over performance, and never stop learning. Currently based in New York, open to remote opportunities worldwide.</p>
+      <p>When I'm not coding, I'm contributing to open source, writing about software architecture, or hunting for the perfect espresso.</p>
+    </div>
+    <div class="about-skills">
+      <h3>Technical Arsenal</h3>
+      <ul class="skill-list">
+        <li class="skill-item">
+          <span class="skill-name">JavaScript / TypeScript</span>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
+        </li>
+        <li class="skill-item">
+          <span class="skill-name">React / Next.js</span>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:92%"></div></div>
+        </li>
+        <li class="skill-item">
+          <span class="skill-name">Node.js / Express</span>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:88%"></div></div>
+        </li>
+        <li class="skill-item">
+          <span class="skill-name">PostgreSQL / MongoDB</span>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div>
+        </li>
+        <li class="skill-item">
+          <span class="skill-name">AWS / Docker</span>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:75%"></div></div>
+        </li>
+        <li class="skill-item">
+          <span class="skill-name">Python / FastAPI</span>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:70%"></div></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <span class="section-label">Selected Work</span>
+    <span class="section-num">02</span>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-num">01</div>
+      <div class="project-tags">
+        <span class="tag">Next.js</span>
+        <span class="tag">Stripe</span>
+        <span class="tag">PostgreSQL</span>
+      </div>
+      <h3 class="project-title">Forge Analytics</h3>
+      <p class="project-desc">A real-time SaaS analytics dashboard serving 10k+ users. Features live data streaming, custom charting, and multi-tenant billing integration.</p>
+      <a href="#" class="project-link">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">02</div>
+      <div class="project-tags">
+        <span class="tag">React Native</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">Redis</span>
+      </div>
+      <h3 class="project-title">Kōdo App</h3>
+      <p class="project-desc">Cross-platform mobile app for collaborative code review. Real-time comments, diff view, and GitHub integration with sub-100ms sync.</p>
+      <a href="#" class="project-link">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">03</div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">Docker</span>
+      </div>
+      <h3 class="project-title">Pipeline AI</h3>
+      <p class="project-desc">Automated ML pipeline orchestration tool. Reduced model deployment time from hours to minutes for a team of 20 data scientists.</p>
+      <a href="#" class="project-link">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">04</div>
+      <div class="project-tags">
+        <span class="tag">TypeScript</span>
+        <span class="tag">GraphQL</span>
+        <span class="tag">AWS</span>
+      </div>
+      <h3 class="project-title">Shelf CMS</h3>
+      <p class="project-desc">Headless CMS built for performance. Serves 2M+ requests/day with 99.99% uptime, edge caching, and a plug-and-play plugin system.</p>
+      <a href="#" class="project-link">View Project</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-label">Let's Talk</span>
+    <span class="section-num">03</span>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-left">
+      <h2>Got a project in mind?</h2>
+      <p>I'm always open to discussing new opportunities, interesting ideas, or how we can build something great together. My inbox is always open.</p>
+    </div>
+    <div class="contact-right">
+      <ul class="contact-links">
+        <li class="contact-link-item">
+          <a href="mailto:alex@example.com">
+            Email Me
+            <span>alex@example.com →</span>
+          </a>
+        </li>
+        <li class="contact-link-item">
+          <a href="https://github.com" target="_blank">
+            GitHub
+            <span>github.com/alexchen →</span>
+          </a>
+        </li>
+        <li class="contact-link-item">
+          <a href="https://linkedin.com" target="_blank">
+            LinkedIn
+            <span>linkedin.com/in/alexchen →</span>
+          </a>
+        </li>
+        <li class="contact-link-item">
+          <a href="https://twitter.com" target="_blank">
+            Twitter / X
+            <span>@alexchen →</span>
+          </a>
+        </li>
+        <li class="contact-link-item">
+          <a href="#">
+            Download Resume
+            <span>PDF, 2024 →</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Alex Chen. All rights reserved.</span>
+  <span>Designed & built from scratch.</span>
+</footer>
+
+</body>
+</html>
